@@ -1,13 +1,17 @@
-import java.util.Date;
-
 public class Livre {
-    private String Name;
+    private String Nom;
     private String Editeur;
-    private Date DateEdition;
 
-    public Livre(String name, String editeur, Date dateEdition) {
-        Name = name;
+    public Livre(String nom, String editeur) {
+        Nom = nom;
         Editeur = editeur;
-        DateEdition = dateEdition;
+    }
+
+    public String getNom() {
+        return Nom;
+    }
+
+    public String getEditeur() {
+        return Editeur;
     }
 }

@@ -9,7 +9,7 @@ public class ProgrammTest {
         Scanner saisie = new Scanner(System.in);
 
         //Livres
-        ArrayList<String> ListLivres = new ArrayList();
+        ArrayList<Livre> ListLivres = new ArrayList();
 
         do {
             System.out.println("Voulez-vous ajouter un livre ? (Oui/Non)");
@@ -17,9 +17,12 @@ public class ProgrammTest {
             SaisieUtilisateur = saisie.nextLine();
 
             if (SaisieUtilisateur.toUpperCase().equalsIgnoreCase("OUI")) {
-                System.out.print("Saisir un Livre a ajouter : ");
-                String Livre = saisie.nextLine();
-                ListLivres.add(Livre);
+                System.out.print("Saisir le nom du Livre a ajouter : ");
+                String NomLivre = saisie.nextLine();
+                System.out.print("Saisir le nom du l'editeur du Livre a ajouter : ");
+                String EditeurLivre = saisie.nextLine();
+                Livre NewLivre = new Livre(NomLivre,EditeurLivre);
+                ListLivres.add(NewLivre);
             }else{
                 if(!SaisieUtilisateur.toUpperCase().equalsIgnoreCase("NON")){
                     System.out.println("Saisie non conforme, Veillez reessayer");
@@ -29,15 +32,16 @@ public class ProgrammTest {
         }
         while (SaisieUtilisateur.toUpperCase().equalsIgnoreCase("OUI"));
 
-        if(ListLivres.size()!=0)System.out.println("Livre ajoute");
-        for(String ParcourListAjoute : ListLivres)
+        if(ListLivres.size()!=0)System.out.println("-> Livre ajoute : ");
+        for(Livre ParcourListAjoute : ListLivres)
         {
-            System.out.println(ParcourListAjoute);
+            System.out.println("\tLivre : " + ParcourListAjoute.getNom());
+            System.out.println("\tEditeur : " + ParcourListAjoute.getEditeur() + "\n");
         }
 
 
         //Lecteurs
-        ArrayList<String> ListLecteurs = new ArrayList();
+        ArrayList<Lecteur> ListLecteurs = new ArrayList();
 
         do {
             System.out.println("Voulez-vous ajouter un lecteur ? (Oui/Non)");
@@ -45,9 +49,12 @@ public class ProgrammTest {
             SaisieUtilisateur = saisie.nextLine();
 
             if (SaisieUtilisateur.toUpperCase().equalsIgnoreCase("OUI")) {
-                System.out.print("Saisir un Lecteur a ajouter : ");
-                String Lecteur = saisie.nextLine();
-                ListLecteurs.add(Lecteur);
+                System.out.print("Saisir le prenom du lecteur a ajouter : ");
+                String PrenomLecteur = saisie.nextLine();
+                System.out.print("Saisir le nom du lecteur a ajouter : ");
+                String NomLecteur = saisie.nextLine();
+                Lecteur NewLecteur = new Lecteur(NomLecteur,PrenomLecteur);
+                ListLecteurs.add(NewLecteur);
             }
             else{
                 if(!SaisieUtilisateur.toUpperCase().equalsIgnoreCase("NON")){
@@ -59,10 +66,11 @@ public class ProgrammTest {
         while (SaisieUtilisateur.toUpperCase().equalsIgnoreCase("OUI"));
 
         //Affichage de la liste ListLecteurs
-        if(ListLecteurs.size()!=0)System.out.println("Lecteur ajoute");
-        for(String ParcourLecteurAjoute : ListLecteurs)
+        if(ListLecteurs.size()!=0)System.out.println("-> Lecteur ajoute :");
+        for(Lecteur ParcourLecteurAjoute : ListLecteurs)
         {
-            System.out.println(ParcourLecteurAjoute);
+            System.out.println("\tNom lecteur : " + ParcourLecteurAjoute.getNom());
+            System.out.println("\tPrenom lecteur : " + ParcourLecteurAjoute.getPrenom() + "\n");
         }
     }
 }
