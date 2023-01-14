@@ -1,3 +1,5 @@
+package Application.Object;
+
 public class Lecteur {
     private String Nom;
     private String Prenom;
@@ -13,5 +15,13 @@ public class Lecteur {
 
     public String getPrenom() {
         return Prenom;
+    }
+
+    @Override
+    public String toString() {
+        return "\tApp.Object.Lecteur{" +
+                "Nom='" + Nom + '\'' +
+                ", Prenom='" + Prenom + '\'' +
+                '}';
     }
 }
