@@ -1,8 +1,16 @@
 package Application.Object;
 
+import Application.Configuration.DataBase;
+
+import java.sql.SQLException;
+
 public class Livre {
     private String Nom;
     private String Editeur;
+
+    private String NomBDD = "nom_livre";
+    private String EditeurBDD = "editeur_livre";
+    private String NomTable = "livres";
 
     public Livre(String nom, String editeur) {
         Nom = nom;
@@ -16,11 +24,27 @@ public class Livre {
         return Editeur;
     }
 
+    public String getNomTable() {
+        return NomTable;
+    }
+
     @Override
     public String toString() {
         return "\tApp.Object.Livre{" +
                 "Nom='" + Nom + '\'' +
                 ", Editeur='" + Editeur + '\'' +
                 '}';
+    }
+
+    public void InsertionBDD(DataBase base) {
+        String RequeteInsertionBDD =
+                "INSERT INTO " + NomTable + " ("+ NomBDD +" , " + EditeurBDD +") VALUES " +
+                        " (' " + Nom + " ', ' " + Editeur +" ');";
+        try {
+            base.getMonStatement().executeUpdate(RequeteInsertionBDD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Problème d'insertion BDD !");
+        }
     }
 }

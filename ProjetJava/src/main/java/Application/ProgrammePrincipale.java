@@ -1,15 +1,22 @@
 package Application;
 
+import Application.Configuration.DataBase;
 import Application.Object.Lecteur;
 import Application.Object.Livre;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class ProgrammePrincipale {
     public static void main(String[] args) {
 
         boolean AjoutLivres=true, AjoutLecteurs=true;
+
+        DataBase mabd = new DataBase("madb", "root", "root");
+        mabd.Connexion();
+        mabd.CreationBase();
+        mabd.CreationTables();
 
         //Scanner permettant de récupérér la saisie utilisateur
         Scanner Saisie = new Scanner(System.in);
@@ -27,12 +34,20 @@ public class ProgrammePrincipale {
         if(ListLivres.size()!=0)System.out.println("\n-> Livres ajoute :");
         ListLivres.forEach(System.out::println);
 
+        Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
+        ListLivres.forEach(InsertionBDDLivre);
+
         //Saisie des lecteurs
         ListLecteurs = SaisieUtilisateur(Saisie,"Lecteurs",ListLecteurs);
 
         //Affichage de la liste ListLecteurs
         if(ListLecteurs.size()!=0)System.out.println("\n-> Lecteurs ajoute :");
         ListLecteurs.forEach(System.out::println);
+
+        Consumer<Lecteur> InsertionBDDLecteur = Lelecteur -> Lelecteur.InsertionBDD(mabd);
+        ListLecteurs.forEach(InsertionBDDLecteur);
+
+        mabd.close();
     }
 
 
