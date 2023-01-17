@@ -6,11 +6,11 @@ public class DataBase {
     private String NomBase;
     private String NomUtilisateur;
     private String MotDePasse;
-    private String DriverMySQL = "com.mysql.cj.jdbc.Driver";
-    private String UrlMySQL = "jdbc:mysql://localhost:8889/";
-    private String RequeteCreaBase = "CREATE DATABASE IF NOT EXISTS `mabd` " +
+    private final String DriverMySQL = "com.mysql.cj.jdbc.Driver";
+    private final String UrlMySQL = "jdbc:mysql://localhost:8889/";
+    private final String RequeteCreaBase = "CREATE DATABASE IF NOT EXISTS `mabd` " +
             "DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;";
-    private String RequeteUseBase = "USE mabd;";
+    private final String RequeteUseBase = "USE mabd;";
     private String RequeteCreaLecteur = "CREATE TABLE IF NOT EXISTS `lecteurs` " +
             "(`id_lecteur` int(11) NOT NULL AUTO_INCREMENT," +
             "`nom_lecteur` VARCHAR(255) NOT NULL," +
@@ -31,10 +31,12 @@ public class DataBase {
         return MonStatement;
     }
 
+    //Constructeur qui permet de charger le driver JDBC
     public DataBase(String Nom, String Utilisateur, String MDP){
         this.NomBase = Nom;
         this.NomUtilisateur = Utilisateur;
         this.MotDePasse = MDP;
+        //Try-Catch permettant de charger le driver JDBC
         try {
             Class.forName(DriverMySQL);
             System.out.println("Chargement du Driver JDBC OK !");
@@ -44,7 +46,9 @@ public class DataBase {
         }
     }
 
+    //Méthode permettant la connexion à la base et de préparer les futurs requêtes
     public void Connexion(){
+        //Try-Catch permettant la connexion à PhpMyAdmin
         try {
             MaConnexion = DriverManager.getConnection(
                     UrlMySQL,
@@ -56,6 +60,7 @@ public class DataBase {
             System.out.println("Problème de connexion !");
         }
 
+        //Try-Catch permettant de préparer les futurs requêtes
         try {
             MonStatement=MaConnexion.createStatement();
         } catch (SQLException e) {
@@ -64,6 +69,7 @@ public class DataBase {
         }
     }
 
+    //Méthode permettant de crée la base dans PhpMyAdmin
     public void CreationBase(){
         try {
             MonStatement.executeUpdate(RequeteCreaBase);
@@ -75,7 +81,9 @@ public class DataBase {
         }
     }
 
+    //Méthode permettant de crée les tables dans la base
     public void CreationTables(){
+        //Try-Catch permettant de crée la table lecteurs
         try {
             MonStatement.executeUpdate(RequeteCreaLecteur);
             System.out.println("Création de la table lecteurs OK !");
@@ -83,6 +91,7 @@ public class DataBase {
             e.printStackTrace();
             System.out.println("Problème de création table Lecteur");
         }
+        //Try-Catch permettant de crée la table livres
         try {
             MonStatement.executeUpdate(RequeteCreaLivre);
             System.out.println("Création de la table livres OK !");
@@ -92,6 +101,7 @@ public class DataBase {
         }
     }
 
+    //Méthode permettant de fermer le statement et la connexion
     public void close(){
         try {
             //MonResultatSet.close();
