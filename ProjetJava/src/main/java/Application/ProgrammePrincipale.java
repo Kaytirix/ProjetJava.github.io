@@ -13,9 +13,16 @@ public class ProgrammePrincipale {
 
         boolean AjoutLivres=true, AjoutLecteurs=true;
 
+        //Création d'un objet DataBase nommé mabd
         DataBase mabd = new DataBase("madb", "root", "root");
+
+        //Utilisation de la méthode connexion de l'objet DataBase
         mabd.Connexion();
+
+        //Utilisation de la méthode CreationBase de l'objet DataBase
         mabd.CreationBase();
+
+        //Utilisation de la méthode CreationTables de l'objet DataBase
         mabd.CreationTables();
 
         //Scanner permettant de récupérér la saisie utilisateur
