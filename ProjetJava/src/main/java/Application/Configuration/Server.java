@@ -27,7 +27,7 @@ public class Server {
 
     public void AttenteConnection(){
         try {
-            MonServerSocket.setSoTimeout(10000);
+            MonServerSocket.setSoTimeout(20000);
         } catch (SocketException e) {
             e.printStackTrace();
             System.out.println("Impossible de modifier le temps de connection possible pour le client");
@@ -44,8 +44,11 @@ public class Server {
 
     public void Close(){
         try {
-            MaSocket.close();
-            System.out.println("Deconnection du serveur");
+            MonServerSocket.close();
+            if(MaSocket != null){
+                MaSocket.close();
+            }
+            System.out.println("Deconnecter du serveur");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Impossible de se deconnecter du serveur");

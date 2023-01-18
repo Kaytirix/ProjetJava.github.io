@@ -18,7 +18,10 @@ public class Client {
 
     public void Deconnection(){
         try {
-            MaSocket.close();
+            //Si cette ressource est null n'est pas utile de la fermer et cela éviter l'affichage d'une erreure
+            if(MaSocket != null){
+                MaSocket.close();
+            }
             System.out.println("Deconnection du serveur");
         } catch (IOException e) {
             e.printStackTrace();
