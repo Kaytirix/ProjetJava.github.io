@@ -26,6 +26,7 @@ public class Server {
     }
 
     public void AttenteConnection(){
+        //Création d'un temps de connection. Au delà de celui-ci le serveur n'accepte plus de connection
         try {
             MonServerSocket.setSoTimeout(20000);
         } catch (SocketException e) {
@@ -45,6 +46,7 @@ public class Server {
     public void Close(){
         try {
             MonServerSocket.close();
+            //Si cette ressource est null n'est pas utile de la fermer et cela éviter l'affichage d'une erreure
             if(MaSocket != null){
                 MaSocket.close();
             }
