@@ -1,6 +1,7 @@
 package Application.Configuration;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -13,7 +14,8 @@ public class Server {
     private ServerSocket MonServerSocket = null;
     private InputStream MonInputStream = null;
     private Socket MaSocket = null;
-    private BufferedInputStream bis = null;
+    private BufferedInputStream BufInStream = null;
+    private DataInputStream DataInStream = null;
 
     public Server() {
         try {
@@ -43,6 +45,62 @@ public class Server {
         }
     }
 
+    //Cette fonction récupére le flux entrant des données
+    public void RecuperationFlux(){
+        MonInputStream = null;
+
+        try {
+            MonInputStream = MaSocket.getInputStream();
+            System.out.println("FLux entrant obtenu");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Cette fonction lit les données passer à travers le flux récupérer
+    public void Lecture(){
+        String ChaineLu = null;
+
+        //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
+        String ChaineTerminantLectureCaractere = "-/e";
+        String ChaineTerminantLectureFlux = "-/f";
+
+        if (this.MonInputStream != null) {
+            this.BufInStream = new BufferedInputStream(MonInputStream);
+        }
+
+        if (this.BufInStream != null) {
+            this.DataInStream = new DataInputStream(BufInStream);
+
+        try {
+            //Faire un tant que le caractère lu n'est pas égal à "-" PUIS "/" PUIS "e ou f" on continu de lire caractère par caractère
+            do {
+                char CaractereLu = DataInStream.readChar();
+
+                //Peut-être faire un if enchaînant par un boucle créant une autre chaîne qui construira une potentiel chaîne stoppant la lecture
+                //Si CaractereLu == "-" -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
+                    //1. AH non, ce n'est pas "/" de lu donc on les ajoutes à ChaineLu
+                    //2. OOHOHO, c'est "/" de lu -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
+                        //1. C'EST "e" -> au total on a "-/e" -> on met fin à la lecture de caractère et on insert dans la BDD
+                        //2.C'EST "f" -> au total on a "-/f" -> on met fin à la lecture du FLUX (MonInputStream.close())
+                        //3. C'est autre chose baaaah je sais pas quoi faire
+
+                //Lien utile :
+                    //https://docs.oracle.com/javase/10/docs/api/java/net/Socket.html#isConnected()
+                    //https://www.developpez.net/forums/d2027972/java/general-java/langage/separer-lettres-d-string/
+                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/DataInputStream.html#readChar()
+                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferInputStream.html
+                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferOutputStream.html
+                ChaineLu += CaractereLu;
+
+            }while(ChaineLu != ChaineTerminantLectureCaractere || ChaineLu != ChaineTerminantLectureFlux);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        }
+    }
+
     public void Close(){
         try {
             MonServerSocket.close();
@@ -55,5 +113,9 @@ public class Server {
             e.printStackTrace();
             System.out.println("Impossible de se deconnecter du serveur");
         }
+    }
+
+    public Socket getMaSocket() {
+        return MaSocket;
     }
 }

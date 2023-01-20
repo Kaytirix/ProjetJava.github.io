@@ -23,6 +23,14 @@ public class LancementServer {
         System.out.println("En attente d'une connection...");
         LeServeur.AttenteConnection();
 
+        //Si c'était un serveur multi-client, la lecture serait dans un thread et c'est le thread qui se terminerai au lieu du MAIN
+        while(!LeServeur.getMaSocket().isClosed()){
+
+            LeServeur.RecuperationFlux();
+            LeServeur.Lecture();
+
+        }
+
         //AJOUTER CODE POUR INSERER LES LIVRES ET LECTEUR DANS BDD
         // //Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
         //ListLivres.forEach(InsertionBDDLivre);
