@@ -8,6 +8,9 @@ import java.net.Socket;
 
 public class Client {
     private Socket MaSocket = null;
+    private OutputStream MonOutputStream = null;
+    private BufferedOutputStream MonBufOutStream = null;
+    private DataOutputStream DataOutStream = null;
 
     public Client(String Adresse, int Port) {
         try {
@@ -19,53 +22,37 @@ public class Client {
         }
     }
 
-    public void Ecriture(){
-        //OUVRIR UN FLUX
-        //SPLIT la chaîne de caractère avec une fonction qui retourne un tableau de chaîne de caractère du mot (j'ai son nom donc je décris)
-        //S'inspirer du cour :
-            /*
-            OutputStream MonOutputStream = null;
-
-            try {
-                if (MaSocket != null) {
-                    MonOutputStream = MaSocket.getOutputStream();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void OuvertureFlux(){
+        try {
+            if (MaSocket != null) {
+                MonOutputStream = MaSocket.getOutputStream();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void Ecriture(String LaChaine, String ChaineDeFin){
+        char[] TabCaraParCara = LaChaine.toCharArray();
 
-            BufferedOutputStream bos = null;
+        if (MonOutputStream != null) {
+            MonBufOutStream = new BufferedOutputStream(MonOutputStream);
+        }
 
-            if (MonOutputStream != null) {
-                bos = new BufferedOutputStream(MonOutputStream);
-            }
+        DataOutStream = new DataOutputStream(MonBufOutStream);
 
+        try {
+            LaChaine += ChaineDeFin;
+            DataOutStream.writeChars(LaChaine);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            DataOutputStream dos = new DataOutputStream(bos);
-
-            try {
-                dos.writeInt(3);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                dos.writeDouble(3.14);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-             */
-        //En ajouter les différents caractère mettant à chaque lecture
-        //Fermer le flux
-        //Si nouvelle insertion de donnée, il suffit de rappeler cette fonction cliente
-
-        //Lien utile :
-        //https://docs.oracle.com/javase/10/docs/api/java/net/Socket.html#isConnected()
-        //https://www.developpez.net/forums/d2027972/java/general-java/langage/separer-lettres-d-string/
-        //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/DataInputStream.html#readChar()
-        //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferInputStream.html
-        //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferOutputStream.html
+        try {
+            MaSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void Deconnection(){

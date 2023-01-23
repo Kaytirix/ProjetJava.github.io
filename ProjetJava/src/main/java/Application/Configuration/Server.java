@@ -64,6 +64,8 @@ public class Server {
         //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
         String ChaineTerminantLectureCaractere = "-/e";
         String ChaineTerminantLectureFlux = "-/f";
+        String ChaineTemp = null;
+        char CaractereLu;
 
         if (this.MonInputStream != null) {
             this.BufInStream = new BufferedInputStream(MonInputStream);
@@ -72,32 +74,51 @@ public class Server {
         if (this.BufInStream != null) {
             this.DataInStream = new DataInputStream(BufInStream);
 
-        try {
-            //Faire un tant que le caractère lu n'est pas égal à "-" PUIS "/" PUIS "e ou f" on continu de lire caractère par caractère
-            do {
-                char CaractereLu = DataInStream.readChar();
+            try {
+                do {
+                    CaractereLu = DataInStream.readChar();
 
-                //Peut-être faire un if enchaînant par un boucle créant une autre chaîne qui construira une potentiel chaîne stoppant la lecture
-                //Si CaractereLu == "-" -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
-                    //1. AH non, ce n'est pas "/" de lu donc on les ajoutes à ChaineLu
-                    //2. OOHOHO, c'est "/" de lu -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
-                        //1. C'EST "e" -> au total on a "-/e" -> on met fin à la lecture de caractère et on insert dans la BDD
-                        //2.C'EST "f" -> au total on a "-/f" -> on met fin à la lecture du FLUX (MonInputStream.close())
-                        //3. C'est autre chose baaaah je sais pas quoi faire
+                    //Peut-être faire un if enchaînant par un boucle créant une autre chaîne qui construira une potentiel chaîne stoppant la lecture
+                    //Si CaractereLu == "-" -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
+                        //1. AH non, ce n'est pas "/" de lu donc on les ajoutes à ChaineLu
+                        //2. OOHOHO, c'est "/" de lu -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
+                            //1. C'EST "e" -> au total on a "-/e" -> on met fin à la lecture de caractère et on insert dans la BDD
+                            //2.C'EST "f" -> au total on a "-/f" -> on met fin à la lecture du FLUX (MonInputStream.close())
+                            //3. C'est autre chose baaaah je sais pas quoi faire
 
-                //Lien utile :
-                    //https://docs.oracle.com/javase/10/docs/api/java/net/Socket.html#isConnected()
-                    //https://www.developpez.net/forums/d2027972/java/general-java/langage/separer-lettres-d-string/
-                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/DataInputStream.html#readChar()
-                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferInputStream.html
-                    //https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/io/StringBufferOutputStream.html
-                ChaineLu += CaractereLu;
+                    if(CaractereLu == '-'){
+                        ChaineTemp += String.valueOf(CaractereLu);
 
-            }while(ChaineLu != ChaineTerminantLectureCaractere || ChaineLu != ChaineTerminantLectureFlux);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                        CaractereLu = DataInStream.readChar();
 
+                        if(CaractereLu == '/'){
+                            ChaineTemp +=  String.valueOf(CaractereLu);
+
+                            CaractereLu = DataInStream.readChar();
+                            ChaineTemp+= String.valueOf(CaractereLu);
+
+                            if(ChaineTemp ==  ChaineTerminantLectureCaractere ){
+                                //Peut insertion dans BDD ou dans liste qu'on retourne
+                                System.out.println("---------");
+                                System.out.println(ChaineLu);
+                                System.out.println("---------");
+                            }else{
+                                if(ChaineTemp == ChaineTerminantLectureFlux){
+                                    //Peut insertion dans BDD ou dans liste qu'on retourne
+                                    System.out.println("---------");
+                                    System.out.println(ChaineLu);
+                                    System.out.println("---------");
+                                    MonInputStream.close();
+                                }
+                            }
+                        }
+                    }
+                    ChaineLu += CaractereLu;
+
+                }while( (ChaineTemp != ChaineTerminantLectureCaractere) || (ChaineTemp != ChaineTerminantLectureFlux));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
