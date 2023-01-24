@@ -33,7 +33,6 @@ public class Client {
     }
 
     public void Ecriture(String LaChaine, String ChaineDeFin){
-        char[] TabCaraParCara = LaChaine.toCharArray();
 
         if (MonOutputStream != null) {
             MonBufOutStream = new BufferedOutputStream(MonOutputStream);
@@ -44,12 +43,7 @@ public class Client {
         try {
             LaChaine += ChaineDeFin;
             DataOutStream.writeChars(LaChaine);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            MaSocket.close();
+            DataOutStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

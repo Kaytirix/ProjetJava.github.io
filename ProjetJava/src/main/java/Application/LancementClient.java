@@ -5,7 +5,9 @@ import Application.Object.Lecteur;
 import Application.Object.Livre;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class LancementClient {
     public static void main(String[] args) {
@@ -37,6 +39,22 @@ public class LancementClient {
         if(ListLecteurs.size()!=0)System.out.println("\n-> Lecteurs ajoute :");
         ListLecteurs.forEach(System.out::println);
 
+        LeClient.OuvertureFlux();
+
+        int compteur = 0;
+
+        for (Lecteur LeLecteur: ListLecteurs) {
+            compteur++;
+            if(compteur == ListLecteurs.size()){
+                LeClient.Ecriture(LeLecteur.getNom(), "-&e");
+                LeClient.Ecriture(LeLecteur.getPrenom(), "-&f");
+            }else{
+                LeClient.Ecriture(LeLecteur.getNom(), "-&e");
+                LeClient.Ecriture(LeLecteur.getPrenom(), "-&e");
+            }
+
+        }
+
         LeClient.Deconnection();
     }
 
@@ -59,7 +77,7 @@ public class LancementClient {
                     Lecteur NouveauLecteur = new Lecteur(NomLecteur, PrenomLecteur);
                     Liste.add(NouveauLecteur);
                 }
-                else{
+                if(Type == "Livres") {
                     System.out.print("Saisir le nom du Livre a ajouter : ");
                     String NomLivre = Saisie.nextLine();
                     System.out.print("Saisir le nom du l'editeur du Livre a ajouter : ");

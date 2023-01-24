@@ -1,5 +1,6 @@
 package Application.Configuration;
 
+import javax.sound.midi.Soundbank;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLOutput;
 
 public class Server {
     private int Port = 1234;
@@ -59,63 +61,50 @@ public class Server {
 
     //Cette fonction lit les données passer à travers le flux récupérer
     public void Lecture(){
-        String ChaineLu = null;
+        String ChaineLu = "";
 
         //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
-        String ChaineTerminantLectureCaractere = "-/e";
-        String ChaineTerminantLectureFlux = "-/f";
-        String ChaineTemp = null;
+        boolean ArretLectureFlux = false;
         char CaractereLu;
 
-        if (this.MonInputStream != null) {
-            this.BufInStream = new BufferedInputStream(MonInputStream);
+        if (MonInputStream != null) {
+            BufInStream = new BufferedInputStream(MonInputStream);
         }
 
-        if (this.BufInStream != null) {
-            this.DataInStream = new DataInputStream(BufInStream);
+        if (BufInStream != null) {
+            DataInStream = new DataInputStream(BufInStream);
 
             try {
+
                 do {
                     CaractereLu = DataInStream.readChar();
 
-                    //Peut-être faire un if enchaînant par un boucle créant une autre chaîne qui construira une potentiel chaîne stoppant la lecture
-                    //Si CaractereLu == "-" -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
-                        //1. AH non, ce n'est pas "/" de lu donc on les ajoutes à ChaineLu
-                        //2. OOHOHO, c'est "/" de lu -> PEUT ETRE CHAINE METTANT FIN A LA LECTURE. FAUT REGARDER LE SUIVANT :
-                            //1. C'EST "e" -> au total on a "-/e" -> on met fin à la lecture de caractère et on insert dans la BDD
-                            //2.C'EST "f" -> au total on a "-/f" -> on met fin à la lecture du FLUX (MonInputStream.close())
-                            //3. C'est autre chose baaaah je sais pas quoi faire
-
                     if(CaractereLu == '-'){
-                        ChaineTemp += String.valueOf(CaractereLu);
-
                         CaractereLu = DataInStream.readChar();
 
-                        if(CaractereLu == '/'){
-                            ChaineTemp +=  String.valueOf(CaractereLu);
+                        if(CaractereLu == '&'){
 
                             CaractereLu = DataInStream.readChar();
-                            ChaineTemp+= String.valueOf(CaractereLu);
+                            if(CaractereLu ==  'e' ){
 
-                            if(ChaineTemp ==  ChaineTerminantLectureCaractere ){
                                 //Peut insertion dans BDD ou dans liste qu'on retourne
-                                System.out.println("---------");
-                                System.out.println(ChaineLu);
-                                System.out.println("---------");
+
+                                ChaineLu = "";
                             }else{
-                                if(ChaineTemp == ChaineTerminantLectureFlux){
+                                if(CaractereLu ==  'f'){
+
                                     //Peut insertion dans BDD ou dans liste qu'on retourne
-                                    System.out.println("---------");
-                                    System.out.println(ChaineLu);
-                                    System.out.println("---------");
-                                    MonInputStream.close();
+
+                                    ChaineLu = "";
+                                    ArretLectureFlux = true;
                                 }
                             }
                         }
+                    }else{
+                        ChaineLu += CaractereLu;
                     }
-                    ChaineLu += CaractereLu;
-
-                }while( (ChaineTemp != ChaineTerminantLectureCaractere) || (ChaineTemp != ChaineTerminantLectureFlux));
+                }while(!ArretLectureFlux);
+                MonInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
