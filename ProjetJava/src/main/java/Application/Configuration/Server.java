@@ -1,6 +1,8 @@
 package Application.Configuration;
 
-import javax.sound.midi.Soundbank;
+import Application.Object.Lecteur;
+import Application.Object.Livre;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -8,16 +10,22 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 public class Server {
-    private int Port = 1234;
+    private final int Port = 1234;
+    private int NbMot;
 
     private ServerSocket MonServerSocket = null;
     private InputStream MonInputStream = null;
     private Socket MaSocket = null;
     private BufferedInputStream BufInStream = null;
     private DataInputStream DataInStream = null;
+
+    private String[] TabMotLu;
+    private ArrayList<String> ListMotLu = new ArrayList<>();
+    private ArrayList<Livre> ListeLivreServeur = new ArrayList<>();
+    private ArrayList<Lecteur> ListeLecteurServeur = new ArrayList<>();
 
     public Server() {
         try {
@@ -60,12 +68,13 @@ public class Server {
     }
 
     //Cette fonction lit les données passer à travers le flux récupérer
-    public void Lecture(){
+    public String[] LectureFlux(){
         String ChaineLu = "";
+        NbMot = 0;
 
         //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
         boolean ArretLectureFlux = false;
-        char CaractereLu;
+
 
         if (MonInputStream != null) {
             BufInStream = new BufferedInputStream(MonInputStream);
@@ -73,47 +82,85 @@ public class Server {
 
         if (BufInStream != null) {
             DataInStream = new DataInputStream(BufInStream);
+        }
 
-            try {
+        if (DataInStream != null) {
+            do {
+                ArretLectureFlux = LectureChaine(ChaineLu, ArretLectureFlux);
+            } while (!ArretLectureFlux);
 
-                do {
-                    CaractereLu = DataInStream.readChar();
+            TabMotLu = new String[ListMotLu.size()];
 
-                    if(CaractereLu == '-'){
-                        CaractereLu = DataInStream.readChar();
+            int compteur = 0;
 
-                        if(CaractereLu == '&'){
-
-                            CaractereLu = DataInStream.readChar();
-                            if(CaractereLu ==  'e' ){
-
-                                //Peut insertion dans BDD ou dans liste qu'on retourne
-
-                                ChaineLu = "";
-                            }else{
-                                if(CaractereLu ==  'f'){
-
-                                    //Peut insertion dans BDD ou dans liste qu'on retourne
-
-                                    ChaineLu = "";
-                                    ArretLectureFlux = true;
-                                }
-                            }
-                        }
-                    }else{
-                        ChaineLu += CaractereLu;
-                    }
-                }while(!ArretLectureFlux);
-                MonInputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            //DEBUG
+            for (String LeMot : ListMotLu) {
+                TabMotLu[compteur] = LeMot;
+                System.out.println(LeMot);
+                System.out.println(TabMotLu[compteur]);
+                compteur++;
             }
         }
+
+        return TabMotLu;
+    }
+
+    private boolean LectureChaine(String ChaineLu, boolean ArretLectureFlux){
+        char CaractereLu;
+
+        try {
+            CaractereLu = DataInStream.readChar();
+
+            if(CaractereLu == '-'){
+                CaractereLu = DataInStream.readChar();
+
+                if(CaractereLu == '&') {
+                    CaractereLu = DataInStream.readChar();
+
+                    if (CaractereLu == 'e') {
+                        ListMotLu.add(ChaineLu);
+                        ChaineLu = "";
+                    } else {
+                        if (CaractereLu == 'f') {
+                            ListMotLu.add(ChaineLu);
+                            ChaineLu = "";
+                            ArretLectureFlux = true;
+                        }
+                    }
+                }
+            }else{
+                ChaineLu += CaractereLu;
+                System.out.println(ChaineLu);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            ArretLectureFlux = true;
+        }
+        return ArretLectureFlux;
+    }
+
+    public void ConstructionListObjet(String Type, String ParametreConstructeurUn, String ParametreConstructeurDeux ){
+        if(Type == "Livre"){
+            ListeLivreServeur.add(new Livre(ParametreConstructeurUn,ParametreConstructeurDeux));
+        }
+
+        if(Type == "Lecteurs"){
+            ListeLecteurServeur.add(new Lecteur(ParametreConstructeurUn,ParametreConstructeurDeux));
+        }
+    }
+
+    public ArrayList<Livre> getListeLivreServeur() {
+        return ListeLivreServeur;
+    }
+
+    public ArrayList<Lecteur> getListeLecteurServeur() {
+        return ListeLecteurServeur;
     }
 
     public void Close(){
         try {
             MonServerSocket.close();
+            MonInputStream.close();
             //Si cette ressource est null n'est pas utile de la fermer et cela éviter l'affichage d'une erreure
             if(MaSocket != null){
                 MaSocket.close();

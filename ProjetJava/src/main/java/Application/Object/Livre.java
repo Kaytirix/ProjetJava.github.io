@@ -17,13 +17,24 @@ public class Livre {
         Editeur = editeur;
     }
 
+    public void InsertionBDD(DataBase base) {
+        String RequeteInsertionBDD =
+                "INSERT INTO " + NomTable + " ("+ NomBDD +" , " + EditeurBDD +") VALUES " +
+                        " (' " + Nom + " ', ' " + Editeur +" ');";
+        try {
+            base.getMonStatement().executeUpdate(RequeteInsertionBDD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Problème d'insertion BDD !");
+        }
+    }
+
     public String getNom() {
         return Nom;
     }
     public String getEditeur() {
         return Editeur;
     }
-
     public String getNomTable() {
         return NomTable;
     }
@@ -36,15 +47,5 @@ public class Livre {
                 '}';
     }
 
-    public void InsertionBDD(DataBase base) {
-        String RequeteInsertionBDD =
-                "INSERT INTO " + NomTable + " ("+ NomBDD +" , " + EditeurBDD +") VALUES " +
-                        " (' " + Nom + " ', ' " + Editeur +" ');";
-        try {
-            base.getMonStatement().executeUpdate(RequeteInsertionBDD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Problème d'insertion BDD !");
-        }
-    }
+
 }

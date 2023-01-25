@@ -2,9 +2,16 @@ package Application;
 
 import Application.Configuration.DataBase;
 import Application.Configuration.Server;
+import Application.Object.Lecteur;
+import Application.Object.Livre;
+
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class LancementServer {
     public static void main(String[] args) {
+        String[] TabMotLu;
+        int compteur;
 
         Server LeServeur = new Server();
 
@@ -26,14 +33,41 @@ public class LancementServer {
         //Si c'était un serveur multi-client, la lecture serait dans un thread et c'est le thread qui se terminerai au lieu du MAIN
         
         LeServeur.RecuperationFlux();
-        LeServeur.Lecture();
+
+        //Livre
+        TabMotLu = LeServeur.LectureFlux();
+
+        compteur = 0;
+        for (String LeMot: TabMotLu) {
+            compteur++;
+            if(compteur % 2 == 0){
+                LeServeur.ConstructionListObjet("Livre",TabMotLu[compteur-2],TabMotLu[compteur-1]);
+            }
+        }
 
         //AJOUTER CODE POUR INSERER LES LIVRES ET LECTEUR DANS BDD
-        // //Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
-        //ListLivres.forEach(InsertionBDDLivre);
+        Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
+        LeServeur.getListeLivreServeur().forEach(InsertionBDDLivre);
 
-        //Consumer<Lecteur> InsertionBDDLecteur = Lelecteur -> Lelecteur.InsertionBDD(mabd);
-        //ListLecteurs.forEach(InsertionBDDLecteur);
+        /*
+        //Lecteur
+        TabMotLu = LeServeur.LectureFlux();
+
+        compteur = 0;
+        for (String LeMot: TabMotLu) {
+            compteur++;
+            if(compteur % 2 == 0){
+                LeServeur.ConstructionListObjet("Lecteur",TabMotLu[compteur-2],TabMotLu[compteur-1]);
+            }
+        }
+
+
+
+        Consumer<Lecteur> InsertionBDDLecteur = Lelecteur -> Lelecteur.InsertionBDD(mabd);
+        LeServeur.getListeLecteurServeur().forEach(InsertionBDDLecteur);
+
+
+         */
 
         System.out.println("Fermeture de la BDD");
         mabd.close();
