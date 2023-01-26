@@ -34,6 +34,8 @@ public class LancementServer {
         
         LeServeur.RecuperationFlux();
 
+        System.out.println("Lecture des livres");
+
         //Livre
         TabMotLu = LeServeur.LectureFlux();
 
@@ -49,7 +51,8 @@ public class LancementServer {
         Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
         LeServeur.getListeLivreServeur().forEach(InsertionBDDLivre);
 
-        /*
+        System.out.println("Lecture des lecteurs");
+
         //Lecteur
         TabMotLu = LeServeur.LectureFlux();
 
@@ -57,17 +60,12 @@ public class LancementServer {
         for (String LeMot: TabMotLu) {
             compteur++;
             if(compteur % 2 == 0){
-                LeServeur.ConstructionListObjet("Lecteur",TabMotLu[compteur-2],TabMotLu[compteur-1]);
+                LeServeur.ConstructionListObjet("Lecteurs",TabMotLu[compteur-2],TabMotLu[compteur-1]);
             }
         }
 
-
-
         Consumer<Lecteur> InsertionBDDLecteur = Lelecteur -> Lelecteur.InsertionBDD(mabd);
         LeServeur.getListeLecteurServeur().forEach(InsertionBDDLecteur);
-
-
-         */
 
         System.out.println("Fermeture de la BDD");
         mabd.close();

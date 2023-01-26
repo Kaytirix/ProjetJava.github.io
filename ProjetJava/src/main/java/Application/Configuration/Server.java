@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
     private final int Port = 1234;
@@ -23,6 +24,7 @@ public class Server {
     private DataInputStream DataInStream = null;
 
     private String[] TabMotLu;
+    private List<Character> ListCaracLu = new ArrayList<Character>();
     private ArrayList<String> ListMotLu = new ArrayList<>();
     private ArrayList<Livre> ListeLivreServeur = new ArrayList<>();
     private ArrayList<Lecteur> ListeLecteurServeur = new ArrayList<>();
@@ -84,56 +86,68 @@ public class Server {
             DataInStream = new DataInputStream(BufInStream);
         }
 
+        char CaractereLu = 0;
         if (DataInStream != null) {
-            do {
-                ArretLectureFlux = LectureChaine(ChaineLu, ArretLectureFlux);
-            } while (!ArretLectureFlux);
-
+            try {
+                do {
+                    CaractereLu = DataInStream.readChar();
+                    ArretLectureFlux = LectureChaine(CaractereLu, ArretLectureFlux);
+                } while (!ArretLectureFlux);
+            } catch (IOException e) {
+                //e.printStackTrace();
+                System.out.println("Problème d'écriture");
+            }
             TabMotLu = new String[ListMotLu.size()];
 
             int compteur = 0;
 
             //DEBUG
             for (String LeMot : ListMotLu) {
-                TabMotLu[compteur] = LeMot;
-                System.out.println(LeMot);
-                System.out.println(TabMotLu[compteur]);
+                if(LeMot != ""){
+                    TabMotLu[compteur] = LeMot;
+                }
                 compteur++;
             }
+            ListMotLu.clear();
+
         }
 
         return TabMotLu;
     }
 
-    private boolean LectureChaine(String ChaineLu, boolean ArretLectureFlux){
-        char CaractereLu;
-
+    private boolean LectureChaine(char CaractereLu, boolean ArretLectureFlux){
+        String MotLut = "";
         try {
-            CaractereLu = DataInStream.readChar();
 
-            if(CaractereLu == '-'){
+            if(CaractereLu != '-' && CaractereLu != 'e'  && CaractereLu != '&'){
+                ListCaracLu.add(CaractereLu);
+
+            }else{
                 CaractereLu = DataInStream.readChar();
 
                 if(CaractereLu == '&') {
                     CaractereLu = DataInStream.readChar();
 
                     if (CaractereLu == 'e') {
-                        ListMotLu.add(ChaineLu);
-                        ChaineLu = "";
-                    } else {
-                        if (CaractereLu == 'f') {
-                            ListMotLu.add(ChaineLu);
-                            ChaineLu = "";
-                            ArretLectureFlux = true;
+                        for (char LeCaractere : ListCaracLu) {
+                            MotLut += String.valueOf(LeCaractere);
                         }
+                        ListMotLu.add(MotLut);
+                        ListCaracLu.clear();
+                    } else {
+                        System.out.println("je passe");
+                        for (char LeCaractere : ListCaracLu) {
+                            MotLut += String.valueOf(LeCaractere);
+                        }
+                        ListMotLu.add(MotLut);
+                        ListCaracLu.clear();
+                        ArretLectureFlux = true;
                     }
                 }
-            }else{
-                ChaineLu += CaractereLu;
-                System.out.println(ChaineLu);
+                ListCaracLu.add(CaractereLu);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             ArretLectureFlux = true;
         }
         return ArretLectureFlux;

@@ -49,6 +49,27 @@ public class Client {
         }
     }
 
+    public void Ecriture(String ChaineDeFin){
+
+        if (MonOutputStream != null) {
+            MonBufOutStream = new BufferedOutputStream(MonOutputStream);
+        }
+
+        DataOutStream = new DataOutputStream(MonBufOutStream);
+
+        try {
+            DataOutStream.writeChars(ChaineDeFin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            DataOutStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void Deconnection(){
         try {
             //Si cette ressource est null n'est pas utile de la fermer et cela éviter l'affichage d'une erreur

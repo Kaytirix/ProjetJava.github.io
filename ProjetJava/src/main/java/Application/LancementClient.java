@@ -36,6 +36,12 @@ public class LancementClient {
         if (ListLivres.size() != 0){
             System.out.println("\n-> Livres ajoute :");
             ListLivres.forEach(System.out::println);
+        }
+
+        System.out.println("Envoi des donnée des livres au serveur");
+        if(ListLivres.size() == 0){
+            LeClient.Ecriture("-&f");
+        }else{
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
         }
 
@@ -43,6 +49,11 @@ public class LancementClient {
         if (ListLecteurs.size() != 0){
             System.out.println("\n-> Lecteurs ajoute :");
             ListLecteurs.forEach(System.out::println);
+        }
+        System.out.println("Envoi des donnée des lecteurs au serveur");
+        if(ListLecteurs.size() == 0){
+            LeClient.Ecriture("-&f");
+        }else{
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }
 
@@ -91,10 +102,11 @@ public class LancementClient {
 
         for (Livre LeLivre: LaListe) {
             compteur++;
-            if(compteur == LaListe.size()){
+
+            if (compteur == LaListe.size()) {
                 LeClient.Ecriture(LeLivre.getNom(), "-&e");
                 LeClient.Ecriture(LeLivre.getEditeur(), "-&f");
-            }else{
+            } else {
                 LeClient.Ecriture(LeLivre.getNom(), "-&e");
                 LeClient.Ecriture(LeLivre.getEditeur(), "-&e");
             }
@@ -105,6 +117,7 @@ public class LancementClient {
 
         for (Lecteur LeLecteur: LaListe) {
             compteur++;
+
             if(compteur == LaListe.size()){
                 LeClient.Ecriture(LeLecteur.getNom(), "-&e");
                 LeClient.Ecriture(LeLecteur.getPrenom(), "-&f");
