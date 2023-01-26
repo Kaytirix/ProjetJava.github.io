@@ -40,9 +40,15 @@ public class LancementClient {
 
         System.out.println("Envoi des donnée des livres au serveur");
         if(ListLivres.size() == 0){
-            LeClient.Ecriture("-&f");
+            LeClient.Ecriture();
         }else{
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
+        }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         //Affichage de la liste ListLecteurs
@@ -52,7 +58,7 @@ public class LancementClient {
         }
         System.out.println("Envoi des donnée des lecteurs au serveur");
         if(ListLecteurs.size() == 0){
-            LeClient.Ecriture("-&f");
+            LeClient.Ecriture();
         }else{
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }

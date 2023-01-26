@@ -49,7 +49,7 @@ public class Client {
         }
     }
 
-    public void Ecriture(String ChaineDeFin){
+    public void Ecriture(){
 
         if (MonOutputStream != null) {
             MonBufOutStream = new BufferedOutputStream(MonOutputStream);
@@ -58,11 +58,13 @@ public class Client {
         DataOutStream = new DataOutputStream(MonBufOutStream);
 
         try {
-            DataOutStream.writeChars(ChaineDeFin);
+            DataOutStream.writeChar('-');
+            DataOutStream.writeChar('&');
+            DataOutStream.writeChar('f');
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         try {
             DataOutStream.flush();
         } catch (IOException e) {
