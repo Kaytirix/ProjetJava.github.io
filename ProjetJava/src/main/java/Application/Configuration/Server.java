@@ -94,7 +94,6 @@ public class Server {
                     ArretLectureFlux = LectureChaine(CaractereLu, ArretLectureFlux);
                 } while (!ArretLectureFlux);
             } catch (IOException e) {
-                //e.printStackTrace();
                 System.out.println("Problème d'écriture");
             }
             TabMotLu = new String[ListMotLu.size()];
@@ -119,7 +118,7 @@ public class Server {
         String MotLut = "";
         try {
 
-            if(CaractereLu != '-' && CaractereLu != 'e'  && CaractereLu != '&'){
+            if(CaractereLu != '-'){
                 ListCaracLu.add(CaractereLu);
 
             }else{
@@ -135,7 +134,6 @@ public class Server {
                         ListMotLu.add(MotLut);
                         ListCaracLu.clear();
                     } else {
-                        System.out.println("je passe");
                         for (char LeCaractere : ListCaracLu) {
                             MotLut += String.valueOf(LeCaractere);
                         }
@@ -144,10 +142,9 @@ public class Server {
                         ArretLectureFlux = true;
                     }
                 }
-                ListCaracLu.add(CaractereLu);
             }
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             ArretLectureFlux = true;
         }
         return ArretLectureFlux;
