@@ -49,7 +49,7 @@ public class Client {
         }
     }
 
-    public void Ecriture(){
+    /*public void Ecriture(){
 
         if (MonOutputStream != null) {
             MonBufOutStream = new BufferedOutputStream(MonOutputStream);
@@ -70,7 +70,7 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void Deconnection(){
         try {

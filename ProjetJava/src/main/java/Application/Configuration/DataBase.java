@@ -80,10 +80,10 @@ public class DataBase {
         try {
             MonStatement.executeUpdate(RequeteCreaBase);
             MonStatement.executeUpdate(RequeteUseBase);
-            System.out.println("Verification ou création de la Base mabd OK !");
+            System.out.println("Verification ou creation de la Base mabd OK !");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Probleme de création de la base !");
+            System.out.println("Probleme de creation de la base !");
         }
     }
 

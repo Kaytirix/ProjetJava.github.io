@@ -32,18 +32,22 @@ public class LancementClient {
 
         LeClient.OuvertureFlux();
 
-        //Affichage de la liste ListLivres
+        //Affichage de la liste ListLivres et envoi de cette liste a la bdd
         if (ListLivres.size() != 0){
             System.out.println("\n-> Livres ajoute :");
             ListLivres.forEach(System.out::println);
+            System.out.println("Envoi des donnees des livres au serveur");
+            ParcourListeLivrePourEcriture(ListLivres, LeClient);
         }
+        else
+            System.out.println("Aucun livre n'a étais saisi pour etre envoyé au serveur");
 
-        System.out.println("Envoi des donnée des livres au serveur");
+        /*System.out.println("Envoi des donnee des livres au serveur");
         if(ListLivres.size() == 0){
             LeClient.Ecriture();
         }else{
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
-        }
+        }*/
 
         try {
             Thread.sleep(1000);
@@ -51,17 +55,23 @@ public class LancementClient {
             e.printStackTrace();
         }
 
-        //Affichage de la liste ListLecteurs
+        //Affichage de la liste ListLecteurs et envoi de cette liste a la bdd
         if (ListLecteurs.size() != 0){
             System.out.println("\n-> Lecteurs ajoute :");
             ListLecteurs.forEach(System.out::println);
+            System.out.println("Envoi des donnees des lecteurs au serveur");
+            ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }
-        System.out.println("Envoi des donnée des lecteurs au serveur");
+        else
+            System.out.println("Aucun lecteur n'a étais saisi pour etre envoyé au serveur");
+
+
+        /*System.out.println("Envoi des donnee des lecteurs au serveur");
         if(ListLecteurs.size() == 0){
             LeClient.Ecriture();
         }else{
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
-        }
+        }*/
 
         LeClient.Deconnection();
     }

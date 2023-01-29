@@ -94,7 +94,7 @@ public class Server {
                     ArretLectureFlux = LectureChaine(CaractereLu, ArretLectureFlux);
                 } while (!ArretLectureFlux);
             } catch (IOException e) {
-                System.out.println("Problème d'écriture");
+                System.out.println("Probleme d'écriture");
             }
             TabMotLu = new String[ListMotLu.size()];
 

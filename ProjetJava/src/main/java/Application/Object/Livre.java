@@ -25,7 +25,7 @@ public class Livre {
             base.getMonStatement().executeUpdate(RequeteInsertionBDD);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Problème d'insertion BDD !");
+            System.out.println("Probleme d'insertion BDD !");
         }
     }
 
@@ -41,8 +41,7 @@ public class Livre {
 
     @Override
     public String toString() {
-        return "\tApp.Object.Livre{" +
-                "Nom='" + Nom + '\'' +
+        return "\t{Nom='" + Nom + '\'' +
                 ", Editeur='" + Editeur + '\'' +
                 '}';
     }

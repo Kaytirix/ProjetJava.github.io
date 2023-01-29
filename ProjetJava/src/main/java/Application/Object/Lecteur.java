@@ -31,8 +31,7 @@ public class Lecteur {
 
     @Override
     public String toString() {
-        return "\tApp.Object.Lecteur{" +
-                "Nom='" + Nom + '\'' +
+        return "\t{Nom='" + Nom + '\'' +
                 ", Prenom='" + Prenom + '\'' +
                 '}';
     }
@@ -45,7 +44,7 @@ public class Lecteur {
             base.getMonStatement().executeUpdate(RequeteInsertionBDD);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Problème d'insertion BDD !");
+            System.out.println("Probleme d'insertion BDD !");
         }
     }
 }
