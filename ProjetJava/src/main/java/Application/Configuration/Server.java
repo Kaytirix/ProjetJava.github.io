@@ -15,21 +15,48 @@ import java.util.List;
 
 public class Server {
 
-    //A commenter
-
+    //region Attribut
+    //Port d'écoute du serveur
     private final int Port = 1234;
+
+    //Extrémité côté serveur du canal entre le client et serveur
     private ServerSocket MonServerSocket = null;
+
+    //Flux entrant
     private InputStream MonInputStream = null;
+
+    //La connection du client
     private Socket MaSocket = null;
+
+    //Les données envoyés par le client est stocké
+    // dans un buffer dans le d'utiliser le moins de ressource
     private BufferedInputStream BufInStream = null;
+
+    //Type de donnée envoyé par le client
     private DataInputStream DataInStream = null;
 
+    //Tableau contenant tous les mots lus
     private String[] TabMotLu;
-    private List<Character> ListCaracLu = new ArrayList<Character>();
-    private ArrayList<String> ListMotLu = new ArrayList<>();
-    private ArrayList<Livre> ListeLivreServeur = new ArrayList<>();
-    private ArrayList<Lecteur> ListeLecteurServeur = new ArrayList<>();
 
+    //Liste de tout les caractères du mot qui est entrain d'être lu
+    private List<Character> ListCaracLu = new ArrayList<Character>();
+
+    //Liste de tout les mots lus
+    private ArrayList<String> ListMotLu = new ArrayList<>();
+
+    //Liste de tout les livres envoyés par le client
+    private ArrayList<Livre> ListeLivreServeur = new ArrayList<>();
+
+    //Liste de tout les lecteurs envoyés par le client
+    private ArrayList<Lecteur> ListeLecteurServeur = new ArrayList<>();
+    //endregion
+
+
+    //region Constructeur
+    /*
+    Constructeur de la classe
+       -> Il permet au serveur de signaler sur quel port de la machine qui doit écouter
+     */
     public Server() {
         try {
             MonServerSocket = new ServerSocket(Port);
@@ -39,7 +66,15 @@ public class Server {
             System.out.println("Creation du server socket impossible, le port doit être utiliser par une autre application");
         }
     }
+    //endregion
 
+
+    //region Méthode
+    /*
+    Initialise un timeout : C'est le temps qu'un client à pour se connecter au serveur
+        S'il est dépassé, le serveur ne lis pas les données
+    Puis attend la connection d'un client au serveur.
+     */
     public void AttenteConnection(){
         //Création d'un temps de connection. Au delà de celui-ci le serveur n'accepte plus de connection
         try {
@@ -49,8 +84,7 @@ public class Server {
             System.out.println("Impossible de modifier le temps de connection possible pour le client");
         }
         try {
-            //Fonction qui stop le programme tant qu'un client ne s'est pas connecté
-            MaSocket = MonServerSocket.accept();
+            MaSocket = MonServerSocket.accept();  //Fonction qui stop le programme tant qu'un client ne s'est pas connecté
             System.out.println("Un client est connecte au serveur");
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,10 +92,11 @@ public class Server {
         }
     }
 
-    //Cette fonction récupére le flux entrant des données
-    public void RecuperationFlux(){
-        MonInputStream = null;
 
+    /*
+    Cette fonction récupére le flux entrant des données, c'est à dire, tout les octets transmits
+     */
+    public void RecuperationFlux(){
         try {
             MonInputStream = MaSocket.getInputStream();
             System.out.println("FLux entrant obtenu");
@@ -70,12 +105,18 @@ public class Server {
         }
     }
 
-    //Cette fonction lit les données passer à travers le flux récupérer
-    public String[] LectureFlux(){
-        String ChaineLu = "";
 
-        //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
-        boolean ArretLectureFlux = false;
+    /*
+    Cette fonction lit les données passer à travers le flux récupérer tant
+     qu'il ne rencontre pas d'identifiant de fin de flux ou de chaîne
+
+     RETOURNE : Un tableau de chaîne de caractère comportant tout les mots lu
+     */
+    public String[] LectureFlux(){
+        char CaractereLu;
+        int compteur = 0;
+        boolean ArretLectureFlux = false; //Il permet de déterminer si l'identifiant de fin de flux est lu
+        TabMotLu = new String[ListMotLu.size()];
 
 
         if (MonInputStream != null) {
@@ -86,7 +127,6 @@ public class Server {
             DataInStream = new DataInputStream(BufInStream);
         }
 
-        char CaractereLu = 0;
         if (DataInStream != null) {
             try {
                 do {
@@ -96,11 +136,8 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("Probleme d'écriture");
             }
-            TabMotLu = new String[ListMotLu.size()];
 
-            int compteur = 0;
-
-            //DEBUG
+            //Transforme la liste de mot en tableau de mot dans le but de recréer plus tard l'objet qui a été envoyé
             for (String LeMot : ListMotLu) {
                 if(LeMot != ""){
                     TabMotLu[compteur] = LeMot;
@@ -108,25 +145,39 @@ public class Server {
                 compteur++;
             }
             ListMotLu.clear();
-
         }
 
         return TabMotLu;
     }
 
+
+    /*
+    Lit le caractère envoyé par le client et reconstitu le mot
+
+    PARAMETRE :
+        CaractereLu : C'est le caractère lu par le serveur
+        ArretLectureFlux : C'est le boolean d'arrêt de la lecture de flux qui est passé
+        en paramètre pour le redéfinir car il n'est pas en attribut de la classe
+
+    RETOURNE : Un boolean précisant si l'arrêt de la lecture du flux doit être réalisé
+     */
     private boolean LectureChaine(char CaractereLu, boolean ArretLectureFlux){
         String MotLut = "";
         try {
 
+            //Si le caractère est différent de "-", on l'ajoute
             if(CaractereLu != '-'){
                 ListCaracLu.add(CaractereLu);
 
             }else{
                 CaractereLu = DataInStream.readChar();
 
+                //On vérifie si le caractère lu est "&" car il fait parti de l'identiant de fin de chaîne ou de flux
                 if(CaractereLu == '&') {
                     CaractereLu = DataInStream.readChar();
 
+                    //Si l'identifiant est "-&e", cela signifie que
+                    // le mot doit être reconstruit et ajouté à la liste de mot
                     if (CaractereLu == 'e') {
                         for (char LeCaractere : ListCaracLu) {
                             MotLut += String.valueOf(LeCaractere);
@@ -134,6 +185,8 @@ public class Server {
                         ListMotLu.add(MotLut);
                         ListCaracLu.clear();
                     } else {
+                        //Sinon l'identifiant est "-&f" et il signifie que la
+                        // lecture du flux doit être arrêter tout en ajoutant le dernier mot à liste de mot
                         for (char LeCaractere : ListCaracLu) {
                             MotLut += String.valueOf(LeCaractere);
                         }
@@ -150,6 +203,16 @@ public class Server {
         return ArretLectureFlux;
     }
 
+
+    /*
+    Cette méthode permet de reconstruire l'objet que le client envoi au
+    serveur dans le but de simplifier son insertion dans la BDD
+
+    PARAMETRE :
+        Type : Le type d'objet à reconstituer
+        ParametreConstructeurUn : Le premier paramètre du constructeur de l'objet
+        ParametreConstructeurDeux : Le second paramètre du constructeur de l'objet
+     */
     public void ConstructionListObjet(String Type, String ParametreConstructeurUn, String ParametreConstructeurDeux ){
         if(Type == "Livre"){
             ListeLivreServeur.add(new Livre(ParametreConstructeurUn,ParametreConstructeurDeux));
@@ -160,14 +223,10 @@ public class Server {
         }
     }
 
-    public ArrayList<Livre> getListeLivreServeur() {
-        return ListeLivreServeur;
-    }
 
-    public ArrayList<Lecteur> getListeLecteurServeur() {
-        return ListeLecteurServeur;
-    }
-
+    /*
+    Ferme toute les ressources utilisées par le serveur
+     */
     public void Close(){
         try {
             MonServerSocket.close();
@@ -182,8 +241,16 @@ public class Server {
             System.out.println("Impossible de se deconnecter du serveur");
         }
     }
+    //endregion
 
-    public Socket getMaSocket() {
-        return MaSocket;
+
+    //region Getter
+    public ArrayList<Livre> getListeLivreServeur() {
+        return ListeLivreServeur;
     }
+
+    public ArrayList<Lecteur> getListeLecteurServeur() {
+        return ListeLecteurServeur;
+    }
+    //endregion
 }
