@@ -42,13 +42,6 @@ public class LancementClient {
         else
             System.out.println("Aucun livre n'a étais saisi pour etre envoyé au serveur");
 
-        /*System.out.println("Envoi des donnee des livres au serveur");
-        if(ListLivres.size() == 0){
-            LeClient.Ecriture();
-        }else{
-            ParcourListeLivrePourEcriture(ListLivres, LeClient);
-        }*/
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -64,14 +57,6 @@ public class LancementClient {
         }
         else
             System.out.println("Aucun lecteur n'a étais saisi pour etre envoyé au serveur");
-
-
-        /*System.out.println("Envoi des donnee des lecteurs au serveur");
-        if(ListLecteurs.size() == 0){
-            LeClient.Ecriture();
-        }else{
-            ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
-        }*/
 
         LeClient.Deconnection();
     }

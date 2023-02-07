@@ -12,6 +12,10 @@ public class Client {
     private BufferedOutputStream MonBufOutStream = null;
     private DataOutputStream DataOutStream = null;
 
+    //Constructeur d'un Client avec une Adresse et un Port de connexion au serveur
+    //Entrée :
+    // Adresse -> Permet de se connecter au serveur
+    // Port -> Permet de se conneceter sur le bon canal d'ouverture du serveur
     public Client(String Adresse, int Port) {
         try {
             MaSocket = new Socket(Adresse, Port);
@@ -22,6 +26,7 @@ public class Client {
         }
     }
 
+    //Ouverture du flux permettant de transmettre les données au serveur
     public void OuvertureFlux(){
         try {
             if (MaSocket != null) {
@@ -32,6 +37,10 @@ public class Client {
         }
     }
 
+    //Envoie la chaine de caractère au serveur
+    //Entrée :
+    // LaChaine -> Chaine de caractère a transmettre au serveur
+    // ChaineDeFin -> Identifiant de fin de chaine ou de fin de flux 
     public void Ecriture(String LaChaine, String ChaineDeFin){
 
         if (MonOutputStream != null) {
@@ -49,29 +58,7 @@ public class Client {
         }
     }
 
-    /*public void Ecriture(){
-
-        if (MonOutputStream != null) {
-            MonBufOutStream = new BufferedOutputStream(MonOutputStream);
-        }
-
-        DataOutStream = new DataOutputStream(MonBufOutStream);
-
-        try {
-            DataOutStream.writeChar('-');
-            DataOutStream.writeChar('&');
-            DataOutStream.writeChar('f');
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            DataOutStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
+    //Deconnection de la liaison entre le client et le serveur
     public void Deconnection(){
         try {
             //Si cette ressource est null n'est pas utile de la fermer et cela éviter l'affichage d'une erreur
