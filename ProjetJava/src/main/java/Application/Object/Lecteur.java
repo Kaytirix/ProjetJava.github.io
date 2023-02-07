@@ -12,30 +12,18 @@ public class Lecteur {
     private String PrenomBDD = "prenom_lecteur";
     private String NomTable = "lecteurs";
 
+    //Création d'un lecteur qui doit obligatoirement avoir un nom, prénom
+    //Input :
+    //nom -> nom du lecteur
+    //prenom -> prenom du lecteur
     public Lecteur(String nom, String prenom) {
         Nom = nom;
         Prenom = prenom;
     }
 
-    public String getNom() {
-        return Nom;
-    }
-
-    public String getPrenom() {
-        return Prenom;
-    }
-
-    public String getNomTable() {
-        return NomTable;
-    }
-
-    @Override
-    public String toString() {
-        return "\t{Nom='" + Nom + '\'' +
-                ", Prenom='" + Prenom + '\'' +
-                '}';
-    }
-
+    //Insertion du lecteur concerné dans la base de données grace a la requete
+    //Input :
+    //base -> base de donné
     public void InsertionBDD(DataBase base) {
         String RequeteInsertionBDD =
                 "INSERT INTO " + NomTable + " ("+ NomBDD +", " + PrenomBDD +") VALUES " +
@@ -46,5 +34,26 @@ public class Lecteur {
             e.printStackTrace();
             System.out.println("Probleme d'insertion BDD !");
         }
+    }
+
+    //Méthode permettant la récupération du nom du lecteurs
+    //Retourne le nom du lecteur
+    public String getNom() {
+        return Nom;
+    }
+
+    //Méthode permettant la récupération du prénom du lecteurs
+    //Retourne le prénom du lecteur
+    public String getPrenom() {
+        return Prenom;
+    }
+
+    //Affichage par défaut d'un lecteur
+    //Retourne la chaine de caractère contenant l'affichage par défaut du lecteur concerné
+    @Override
+    public String toString() {
+        return "\t{Nom='" + Nom + '\'' +
+                ", Prenom='" + Prenom + '\'' +
+                '}';
     }
 }

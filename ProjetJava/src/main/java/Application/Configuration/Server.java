@@ -15,8 +15,6 @@ import java.util.List;
 
 public class Server {
     private final int Port = 1234;
-    private int NbMot;
-
     private ServerSocket MonServerSocket = null;
     private InputStream MonInputStream = null;
     private Socket MaSocket = null;
@@ -72,7 +70,6 @@ public class Server {
     //Cette fonction lit les données passer à travers le flux récupérer
     public String[] LectureFlux(){
         String ChaineLu = "";
-        NbMot = 0;
 
         //Se sont les caractères mettant fin à une lecture. Ils sont complexes car c'est pour éviter de potentielle chaîne écrite par l'utilisateur
         boolean ArretLectureFlux = false;

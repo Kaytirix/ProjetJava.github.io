@@ -18,12 +18,15 @@ public class DataBase {
 
     private final String RequeteUseBase = "USE mabd;";
 
+
+    //Création de la table lecteurs dans la base de données
     private String RequeteCreaLecteur = "CREATE TABLE IF NOT EXISTS `lecteurs` " +
             "(`id_lecteur` int(11) NOT NULL AUTO_INCREMENT," +
             "`nom_lecteur` VARCHAR(255) NOT NULL," +
             "`prenom_lecteur` VARCHAR(255) NOT NULL," +
             "PRIMARY KEY (`id_lecteur`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;";
 
+    //Création de la table livres dans la base de données
     private String RequeteCreaLivre = "CREATE TABLE IF NOT EXISTS `livres` (" +
             "`id_livre` int(11) NOT NULL AUTO_INCREMENT," +
             "`nom_livre` VARCHAR(255) NOT NULL," +
@@ -110,7 +113,6 @@ public class DataBase {
     //Méthode permettant de fermer le statement et la connexion
     public void close(){
         try {
-            //MonResultatSet.close();
             MonStatement.close();
             MaConnexion.close();
             System.out.println("Ressources Liberees");

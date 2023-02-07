@@ -58,6 +58,8 @@ public class Client {
         }
     }
 
+    //Envoie au serveur le signale que rien n'a étais saisie pour la liste concerné
+    //par des caractères signifiant la fin de chaine sans chaine préalable
     public void Ecriture() {
         if (MonOutputStream != null) {
             MonBufOutStream = new BufferedOutputStream(MonOutputStream);

@@ -61,6 +61,12 @@ public class LancementClient {
         LeClient.Deconnection();
     }
 
+
+    //Méthode permettant de la saisie Utilisateur d'un livre ou d'un lecteur
+    //Input :
+    //Saisie -> Saisie réaliser par l'utilisateur
+    //Type -> Type d'objet si cela est un livre ou un lecteur
+    //Liste -> Liste de livre ou de lecteur dans laquelle on va ajouter la saisie
     public static void SaisieUtilisateur(Scanner Saisie, String Type, ArrayList Liste) {
 
         //Variable contenant la reponse utilisateur
@@ -71,6 +77,7 @@ public class LancementClient {
 
             ReponseUtilisateur = Saisie.nextLine();
 
+            //Vérification de la saisie et si elle est correcte ajout de cette liste dans la liste correspondant
             if (ReponseUtilisateur.toUpperCase().equalsIgnoreCase("OUI")) {
                 if (Type == "Lecteurs") {
                     System.out.print("Saisir le prenom du lecteur a ajouter : ");
@@ -98,6 +105,10 @@ public class LancementClient {
         while (ReponseUtilisateur.toUpperCase().equalsIgnoreCase("OUI"));
     }
 
+    //Méthode permettant le parcour de la liste des livres pour ecrire dans ecrire dans la base de donnée
+    //Input :
+    //LaListe -> Liste concerné a ecrire dans la base de donné
+    //LeClient -> Client connécté au serveur lui permettant d'envoyé les données au serveur
     public static void ParcourListeLivrePourEcriture(ArrayList<Livre> LaListe, Client LeClient) {
         int compteur = 0;
 
