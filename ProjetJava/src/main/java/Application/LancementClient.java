@@ -38,15 +38,9 @@ public class LancementClient {
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
         }
         else {
-            System.out.println("Aucun livre n'a étais saisi pour etre envoyé au serveur");
+            System.out.println("Aucun livre n'a etais saisi pour etre envoye au serveur");
             LeClient.Ecriture();
         }
-
-        /*try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 
         //Saisie des lecteurs
         SaisieUtilisateur(Saisie, "Lecteurs", ListLecteurs);
@@ -59,7 +53,7 @@ public class LancementClient {
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }
         else {
-            System.out.println("Aucun lecteur n'a étais saisi pour etre envoyé au serveur");
+            System.out.println("Aucun lecteur n'a etais saisi pour etre envoye au serveur");
             LeClient.Ecriture();
         }
 
