@@ -13,7 +13,7 @@ public class Client {
     private DataOutputStream DataOutStream = null;
 
     //Constructeur d'un Client avec une Adresse et un Port de connexion au serveur
-    //Entrée :
+    //Input :
     // Adresse -> Permet de se connecter au serveur
     // Port -> Permet de se conneceter sur le bon canal d'ouverture du serveur
     public Client(String Adresse, int Port) {
@@ -38,9 +38,9 @@ public class Client {
     }
 
     //Envoie la chaine de caractère au serveur
-    //Entrée :
+    //Input :
     // LaChaine -> Chaine de caractère a transmettre au serveur
-    // ChaineDeFin -> Identifiant de fin de chaine ou de fin de flux 
+    // ChaineDeFin -> Identifiant de fin de chaine ou de fin de flux
     public void Ecriture(String LaChaine, String ChaineDeFin){
 
         if (MonOutputStream != null) {
@@ -55,6 +55,25 @@ public class Client {
             DataOutStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Ecriture() {
+        if (MonOutputStream != null) {
+            MonBufOutStream = new BufferedOutputStream(MonOutputStream);
+            DataOutStream = new DataOutputStream(MonBufOutStream);
+            try {
+                DataOutStream.writeChar('-');
+                DataOutStream.writeChar('&');
+                DataOutStream.writeChar('f');
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                DataOutStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

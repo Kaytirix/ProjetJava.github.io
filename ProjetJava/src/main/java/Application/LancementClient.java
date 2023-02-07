@@ -13,6 +13,7 @@ public class LancementClient {
     public static void main(String[] args) {
         boolean AjoutLivres = true, AjoutLecteurs = true;
 
+        //Création d'un client
         Client LeClient = new Client("localhost", 1234);
 
         //Scanner permettant de récupérér la saisie utilisateur
@@ -27,37 +28,42 @@ public class LancementClient {
         //Saisie des livres
         SaisieUtilisateur(Saisie, "Livres", ListLivres);
 
-        //Saisie des lecteurs
-        SaisieUtilisateur(Saisie, "Lecteurs", ListLecteurs);
-
         LeClient.OuvertureFlux();
 
-        //Affichage de la liste ListLivres et envoi de cette liste a la bdd
+        //Affichage de la liste ListLivres et envoi de cette liste au serveur
         if (ListLivres.size() != 0){
             System.out.println("\n-> Livres ajoute :");
             ListLivres.forEach(System.out::println);
             System.out.println("Envoi des donnees des livres au serveur");
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
         }
-        else
+        else {
             System.out.println("Aucun livre n'a étais saisi pour etre envoyé au serveur");
+            LeClient.Ecriture();
+        }
 
-        try {
+        /*try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        //Affichage de la liste ListLecteurs et envoi de cette liste a la bdd
+        //Saisie des lecteurs
+        SaisieUtilisateur(Saisie, "Lecteurs", ListLecteurs);
+
+        //Affichage de la liste ListLecteurs et envoi de cette liste au serveur
         if (ListLecteurs.size() != 0){
             System.out.println("\n-> Lecteurs ajoute :");
             ListLecteurs.forEach(System.out::println);
             System.out.println("Envoi des donnees des lecteurs au serveur");
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }
-        else
+        else {
             System.out.println("Aucun lecteur n'a étais saisi pour etre envoyé au serveur");
+            LeClient.Ecriture();
+        }
 
+        //Deconnection du lien entre le client et le serveur
         LeClient.Deconnection();
     }
 
