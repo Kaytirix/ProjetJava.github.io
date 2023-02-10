@@ -10,7 +10,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="62dd4e72-9516-4163-a114-002e50457a30" name="Changes" comment="" />
+    <list default="true" id="62dd4e72-9516-4163-a114-002e50457a30" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,17 +53,35 @@
       <recent name="C:\Users\ometz\Documents\Java\ProjetJava\ProjetJava\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.Client.jar">
+  <component name="RunManager" selected="Application.LancementClient">
+    <configuration name="LancementClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Application.LancementClient" />
+      <module name="ProjetJava" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Application.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LancementServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Application.LancementServer" />
+      <module name="ProjetJava" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Application.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Client.jar" type="JarApplication" temporary="true">
       <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ProjetJavaClient_jar/Client.jar" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ProjetJavaClient.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ProjetJavaClient_jar/ProjetJavaClient.jar" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ProjetJavaServeur.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ProjetJavaServeur_jar/ProjetJavaServeur.jar" />
       <method v="2" />
     </configuration>
     <configuration name="ProjetJava.jar" type="JarApplication" temporary="true">
@@ -74,11 +94,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LancementClient" />
+        <item itemvalue="Application.LancementServer" />
         <item itemvalue="JAR Application.Client.jar" />
         <item itemvalue="JAR Application.Serveur.jar" />
         <item itemvalue="JAR Application.ProjetJava.jar" />
-        <item itemvalue="JAR Application.ProjetJavaClient.jar" />
-        <item itemvalue="JAR Application.ProjetJavaServeur.jar" />
       </list>
     </recent_temporary>
   </component>
