@@ -26,34 +26,34 @@ public class LancementClient {
         ArrayList<Lecteur> ListLecteurs = new ArrayList();
 
         //Saisie des livres
-        SaisieUtilisateur(Saisie, "Livres", ListLivres);
+        SaisieUtilisateur(Saisie, "livre", ListLivres);
 
         LeClient.OuvertureFlux();
 
         //Affichage de la liste ListLivres et envoi de cette liste au serveur
         if (ListLivres.size() != 0){
-            System.out.println("\n-> Livres ajoute :");
+            System.out.println("\n-> Livre(s) ajoute(s) :");
             ListLivres.forEach(System.out::println);
             System.out.println("Envoi des donnees des livres au serveur");
             ParcourListeLivrePourEcriture(ListLivres, LeClient);
         }
         else {
-            System.out.println("Aucun livre n'a etais saisi pour etre envoye au serveur");
+            System.out.println("Aucun livre n'a ete saisi pour etre envoye au serveur");
             LeClient.Ecriture();
         }
 
         //Saisie des lecteurs
-        SaisieUtilisateur(Saisie, "Lecteurs", ListLecteurs);
+        SaisieUtilisateur(Saisie, "lecteur", ListLecteurs);
 
         //Affichage de la liste ListLecteurs et envoi de cette liste au serveur
         if (ListLecteurs.size() != 0){
-            System.out.println("\n-> Lecteurs ajoute :");
+            System.out.println("\n-> Lecteur(s) ajoute(s) :");
             ListLecteurs.forEach(System.out::println);
             System.out.println("Envoi des donnees des lecteurs au serveur");
             ParcourListeLecteurPourEcriture(ListLecteurs, LeClient);
         }
         else {
-            System.out.println("Aucun lecteur n'a etais saisi pour etre envoye au serveur");
+            System.out.println("Aucun lecteur n'a ete saisi pour etre envoye au serveur");
             LeClient.Ecriture();
         }
 

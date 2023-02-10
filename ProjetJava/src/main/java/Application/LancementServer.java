@@ -49,7 +49,7 @@ public class LancementServer {
         //Insertion des livres lu dans la base de données
         Consumer<Livre> InsertionBDDLivre = Lelivre -> Lelivre.InsertionBDD(mabd);
         LeServeur.getListeLivreServeur().forEach(InsertionBDDLivre);
-        System.out.println("Tous les livres saisie (si il y en a) ont était ajoute a la base de donnée");
+        System.out.println("Tous les livres saisis (si il y en a) ont ete ajoutes a la base de données");
 
         //Lecture des lecteurs a ajouter dans la base de donnée
         TabMotLu = LeServeur.LectureFlux();
@@ -65,7 +65,7 @@ public class LancementServer {
         //Insertion des livres lu dans la base de données
         Consumer<Lecteur> InsertionBDDLecteur = Lelecteur -> Lelecteur.InsertionBDD(mabd);
         LeServeur.getListeLecteurServeur().forEach(InsertionBDDLecteur);
-        System.out.println("Tous les lecteurs saisie (si il y en a) ont était ajoute a la base de donnée");
+        System.out.println("Tous les lecteurs saisis (si il y en a) ont ete ajoutes a la base de données");
 
         //Fermetture de la base de donnée
         System.out.println("Fermeture de la BDD");

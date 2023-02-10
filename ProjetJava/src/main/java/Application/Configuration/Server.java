@@ -60,10 +60,10 @@ public class Server {
     public Server() {
         try {
             MonServerSocket = new ServerSocket(Port);
-            System.out.println("Creation du server socket : OK");
+            System.out.println("Creation du serveur socket : OK");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Creation du server socket impossible, le port doit être utiliser par une autre application");
+            System.out.println("Creation du serveur socket impossible, le port doit être utiliser par une autre application");
         }
     }
     //endregion
