@@ -116,7 +116,6 @@ public class Server {
         char CaractereLu;
         int compteur = 0;
         boolean ArretLectureFlux = false; //Il permet de déterminer si l'identifiant de fin de flux est lu
-        TabMotLu = new String[ListMotLu.size()];
 
 
         if (MonInputStream != null) {
@@ -136,6 +135,10 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("Probleme d'écriture");
             }
+
+            //Si initialisation est faite à cette endroit, c'est pour créer le tableau SELON le nombre de mot
+            //Si il est initalisé avant, sa taille ne sera pas la bonne et créa une exception "out of bound"
+            TabMotLu = new String[ListMotLu.size()];
 
             //Transforme la liste de mot en tableau de mot dans le but de recréer plus tard l'objet qui a été envoyé
             for (String LeMot : ListMotLu) {
